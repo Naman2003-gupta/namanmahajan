@@ -31,8 +31,8 @@ jobs:
 
       - name: Commit changes
         run: |
-          git config --global user.name "Ayushsharma1011"
-          git config --global user.email "ayush988277@gmail.com"
+          git config --global user.name "NamanMahajan"
+          git config --global user.email "naman05mah@gmail.com"
 
           git add .
           git commit -m "⚡ Auto update $(date)" || echo "No changes"
