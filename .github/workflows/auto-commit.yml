@@ -1,1 +1,39 @@
+name: Smart Auto Activity
 
+on:
+  schedule:
+    - cron: "0 */2 * * *"   # every 2 hours
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  auto-commit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generate activity
+        run: |
+          DATE=$(date)
+          echo "Activity generated at $DATE" >> activity.log
+
+          COUNT_FILE="stats.txt"
+          if [ ! -f "$COUNT_FILE" ]; then
+            echo "Commits: 0" > $COUNT_FILE
+          fi
+
+          COUNT=$(grep -o '[0-9]*' $COUNT_FILE)
+          COUNT=$((COUNT+1))
+          echo "Commits: $COUNT" > $COUNT_FILE
+
+      - name: Commit changes
+        run: |
+          git config --global user.name "Ayushsharma1011"
+          git config --global user.email "ayush988277@gmail.com"
+
+          git add .
+          git commit -m "⚡ Auto update $(date)" || echo "No changes"
+          git push
